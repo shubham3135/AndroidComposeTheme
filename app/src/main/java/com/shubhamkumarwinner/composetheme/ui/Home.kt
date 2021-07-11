@@ -24,13 +24,14 @@ import androidx.compose.ui.unit.dp
 import com.shubhamkumarwinner.composetheme.R
 import com.shubhamkumarwinner.composetheme.data.Post
 import com.shubhamkumarwinner.composetheme.data.PostRepo
+import com.shubhamkumarwinner.composetheme.ui.theme.JetNewsTheme
 import java.util.*
 
 @Composable
 fun Home() {
     val featured = remember { PostRepo.getFeaturedPost() }
     val posts = remember { PostRepo.getPosts() }
-    MaterialTheme {
+    JetNewsTheme {
         Scaffold(
             topBar = { AppBar() }
         ) { innerPadding ->
@@ -174,12 +175,23 @@ fun PostItem(
     )
 }
 
+@Preview("Featured Post • Dark")
+@Composable
+private fun FeaturedPostDarkPreview() {
+    val post = remember { PostRepo.getFeaturedPost() }
+    JetNewsTheme(darkTheme = true) {
+        FeaturedPost(post = post)
+    }
+}
+
 @Preview("Post Item")
 @Composable
 private fun PostItemPreview() {
     val post = remember { PostRepo.getFeaturedPost() }
     Surface {
-        PostItem(post = post)
+        JetNewsTheme {
+            PostItem(post = post)
+        }
     }
 }
 
@@ -187,7 +199,9 @@ private fun PostItemPreview() {
 @Composable
 private fun FeaturedPostPreview() {
     val post = remember { PostRepo.getFeaturedPost() }
-    FeaturedPost(post = post)
+    JetNewsTheme {
+        FeaturedPost(post = post)
+    }
 }
 
 @Preview("Home")
