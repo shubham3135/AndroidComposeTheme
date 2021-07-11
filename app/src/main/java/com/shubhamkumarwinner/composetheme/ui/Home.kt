@@ -1,7 +1,6 @@
 package com.shubhamkumarwinner.composetheme.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,20 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shubhamkumarwinner.composetheme.R
 import com.shubhamkumarwinner.composetheme.data.Post
 import com.shubhamkumarwinner.composetheme.data.PostRepo
 import com.shubhamkumarwinner.composetheme.ui.theme.JetNewsTheme
-import java.util.*
 
 @Composable
 fun Home() {
@@ -81,12 +79,13 @@ fun Header(
     modifier: Modifier = Modifier
 ) {
     Surface(
-           color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
-           contentColor = MaterialTheme.colors.primary,
-           modifier = modifier
+        color = MaterialTheme.colors.onSurface.copy(alpha = 0.1f),
+        contentColor = MaterialTheme.colors.primary,
+        modifier = modifier
     ) {
         Text(
             text = text,
+            style = MaterialTheme.typography.subtitle2,
             modifier = modifier
                 .fillMaxWidth()
                 .semantics { heading() }
@@ -143,11 +142,16 @@ private fun PostMetadata(
         append(divider)
         append(stringResource(R.string.read_time, post.metadata.readTimeMinutes))
         append(divider)
+        val tagStyle = MaterialTheme.typography.overline.toSpanStyle().copy(
+            background = MaterialTheme.colors.primary.copy(alpha = 0.1f)
+        )
         post.tags.forEachIndexed { index, tag ->
             if (index != 0) {
                 append(tagDivider)
             }
-            append(" ${tag.uppercase(Locale.getDefault())} ")
+            withStyle(tagStyle) {
+                append(" ${tag.toUpperCase()} ")
+            }
         }
     }
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
